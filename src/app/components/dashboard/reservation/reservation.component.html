@@ -1,31 +1,27 @@
 <div class="testbox">
-    <form>
-      <h4>Vehicle Type<span>*</span></h4>
+    <form [formGroup]="reservationForm">
+      <h4>Vehicle Details</h4>
       <div class="title-block">
-        <select>
+        <select formControlName="vehicleType">
           <option value="car">Car</option>
           <option value="van">Van</option>
           <option value="mr">Motor Cycle</option>
           <option value="mr">Three Wheeler</option>
           <option value="hv">Heavy Vehicle</option>
         </select>
-        <input class="name mr-3" type="text" name="name" placeholder="Model" />
-        <input class="name" type="text" name="name" placeholder="Reg. No" />
+        <input class="name mr-3" type="text" name="name" placeholder="Model" formControlName="model"/>
+        <input class="name" type="text" name="name" placeholder="Reg. No" formControlName="regNo"/>
       </div>
-      <h4>Date<span>*</span></h4>
+      <h4>Select a Time Slot</h4>
       <div class="title-block">
-        <input type="datetime-local" value="2017-06-01" />
-        <select>
-          <option value="car">Car</option>
-          <option value="van">Van</option>
-          <option value="mr">Motor Cycle</option>
-          <option value="mr">Three Wheeler</option>
-          <option value="hv">Heavy Vehicle</option>
+        <input type="date" value="2017-06-01" formControlName="date"/>
+        <select formControlName="timeSlot">
+          <option *ngFor="let item of slots" value="{{item}}">{{item}}</option>
         </select>
       </div>
-      <h4>Service Type<span>*</span></h4>
+      <h4>Service Type</h4>
       <div class="title-block">
-        <select>
+        <select formControlName="serviceType">
           <option value="full">Full Service</option>
           <option value="oil">Oil Changing</option>
           <option value="wash">Body Wash</option>
@@ -33,7 +29,7 @@
         </select>
       </div>
       <div class="btn-block">
-        <button type="submit" href="/">Submit</button>
+        <input type="button" [disabled]="!reservationForm.valid" class="btn" (click)="submit()" value="Submit"/>
       </div>
     </form>
   </div>

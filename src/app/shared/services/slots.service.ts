@@ -4,9 +4,9 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 @Injectable({
   providedIn: 'root'
 })
-export class ReservationService {
+export class SlotsService {
 
-  private dbPath = '/reservations';
+  private dbPath = '/slots';
   slots: AngularFirestoreCollection<any>;
   
   constructor(private db: AngularFirestore) {
@@ -24,4 +24,9 @@ export class ReservationService {
   delete(id: string): Promise<void> {
     return this.slots.doc(id).delete();
   }
+
+  getById(id: any){
+    return this.slots.doc(id);
+  }
+
 }
