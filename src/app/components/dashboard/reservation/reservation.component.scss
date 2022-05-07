@@ -9,7 +9,7 @@ form,
 input,
 select {
     padding: 0;
-    margin: 0;
+    margin: 10px;
     outline: none;
     font-family: Roboto, Arial, sans-serif;
     font-size: 14px;
@@ -43,6 +43,7 @@ span {
     align-items: center;
     height: inherit;
     padding: 3px;
+    margin: 10px;
 }
 
 form {
@@ -179,7 +180,7 @@ button:hover {
 @media (min-width: 568px) {
     .title-block {
         display: flex;
-        justify-content: space-between;
+        justify-content: left;
     }
 
     .title-block select {
