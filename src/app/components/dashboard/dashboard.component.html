@@ -51,8 +51,8 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
-                alt="{{user.displayName}}">
+              <img class="align-self-start mr-5 img-thumbnail rounded-circle"
+                src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}" alt="{{user.displayName}}">
               <div class="media-body">
                 <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
                 <p>User ID: <strong>{{user.uid}}</strong></p>
@@ -72,7 +72,29 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              
+               <table class="responstable">
+                <thead>
+                  <tr>
+                    <th>Vehicle Number</th>
+                    <th>Model</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Payment Status</th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <tr *ngFor="let item of reservations">
+                    <td>{{item.number}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.date}}}</td>
+                    <td>{{item.status}}</td>
+                    <td>Rs. {{ item.payment}}</td>
+                    <td>{{ item.paymentStatus ? 'Done' : 'Pending'}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -86,7 +108,7 @@
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media">
-              
+              <app-reservation></app-reservation>
             </div>
           </div>
         </div>

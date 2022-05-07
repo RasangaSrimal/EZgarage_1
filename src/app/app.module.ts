@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 // service
 import { AuthService } from './shared/services/auth.service';
 import { HomeComponent } from './components/home/home.component';
+import { ReservationComponent } from './components/dashboard/reservation/reservation.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { HomeComponent } from './components/home/home.component';
     ForgotPasswordComponent,
     VerifyEmailComponent,
     HomeComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,
