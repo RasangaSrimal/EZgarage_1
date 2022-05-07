@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 export class DashboardComponent implements OnInit {
 
   isActive: any = { 'profile' : true};
+  reservations: any = [];
 
   constructor(public authService: AuthService,
     private reservationService: ReservationService) {}
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
       )
     ).subscribe(data => {
       console.log(data);
+      this.reservations = data.filter(d => d.userId !== this.authService.userData.uid);;
     });
   }
 
