@@ -47,7 +47,7 @@ export class AuthService {
           this.toastr.success('Logged In Successfully!', 'Success');
           this.router.navigate(['dashboard']);
         });
-        this.SetUserData(result.user);
+        //this.SetUserData(result.user);
       })
       .catch((error) => {
         //window.alert(error.message);
@@ -63,7 +63,7 @@ export class AuthService {
         /* Call the SendVerificaitonMail() function when new user sign 
         up and returns promise */
         this.SendVerificationMail();
-        this.SetUserData(result.user);
+        //this.SetUserData(result.user);
         this.toastr.success('Signed In Successfully!', 'Success');
       })
       .catch((error) => {
@@ -119,7 +119,7 @@ export class AuthService {
           this.toastr.success('Logged In Successfully!', 'Success');
           this.router.navigate(['dashboard']);
         });
-        this.SetUserData(result.user);
+        //this.SetUserData(result.user);
       })
       .catch((error) => {
         window.alert(error);
