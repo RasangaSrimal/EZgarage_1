@@ -12,19 +12,19 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link " (click)="setIsActive('profile')">
+            <a class="nav-link active" (click)="setIsActive('profile')">
               <i class="fas fa-user"></i>{{!authService?.userData?.adminRole ? 'User Profile' : 'Admin Profile'}}
             </a>
           </li>
 
           <li class="nav-item" *ngIf="!authService?.userData?.adminRole">
-            <a class="nav-link active" (click)="setIsActive('reservation')">
+            <a class="nav-link" (click)="setIsActive('reservation')">
               <i class="fas fa-bookmark"></i>My Reservations
             </a>
           </li>
 
           <li class="nav-item" *ngIf="authService?.userData?.adminRole">
-            <a class="nav-link active" (click)="setIsActive('allreservation')">
+            <a class="nav-link" (click)="setIsActive('allreservation')">
               <i class="fas fa-bookmark"></i>All Reservations
             </a>
           </li>
