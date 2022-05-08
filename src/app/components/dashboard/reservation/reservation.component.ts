@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { ReservationService } from 'src/app/shared/services/reservation.service';
 import { SlotsService } from 'src/app/shared/services/slots.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
@@ -17,7 +17,8 @@ export class ReservationComponent implements OnInit {
   slots: any = [];
   
   constructor(private reservationService: ReservationService,
-    private slotsService: SlotsService) { }
+    private slotsService: SlotsService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.reservationForm = new FormGroup({
@@ -55,6 +56,8 @@ export class ReservationComponent implements OnInit {
 
   submit(){
     this.reservationService.create(this.reservationForm.value);
+    this.toastr.success('Reservation Placed Successfully!', 'Success');
     this.reservationForm.reset();
   }
+  
 }

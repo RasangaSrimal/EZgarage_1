@@ -7,6 +7,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone ,// NgZone service to remove outside scope warning
+    private toastr: ToastrService
   ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
@@ -42,12 +44,14 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
+          this.toastr.success('Logged In Successfully!', 'Success');
           this.router.navigate(['dashboard']);
         });
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        //window.alert(error.message);
+        this.toastr.error(error.message, 'Failed');
       });
   }
 
@@ -60,9 +64,11 @@ export class AuthService {
         up and returns promise */
         this.SendVerificationMail();
         this.SetUserData(result.user);
+        this.toastr.success('Signed In Successfully!', 'Success');
       })
       .catch((error) => {
-        window.alert(error.message);
+        //window.alert(error.message);
+        this.toastr.error(error.message, 'Failed');
       });
   }
 
@@ -80,10 +86,11 @@ export class AuthService {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        //window.alert('');
+        this.toastr.success('Password reset email sent, check your inbox.', 'Success');
       })
       .catch((error) => {
-        window.alert(error);
+        this.toastr.error(error, 'Failed');
       });
   }
 
@@ -97,6 +104,7 @@ export class AuthService {
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       if (res) {
+        this.toastr.success('Logged In Successfully!', 'Success');
         this.router.navigate(['dashboard']);
       }
     });
@@ -108,6 +116,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
+          this.toastr.success('Logged In Successfully!', 'Success');
           this.router.navigate(['dashboard']);
         });
         this.SetUserData(result.user);
@@ -140,6 +149,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      this.toastr.success('Logged Out Successfully!', 'Success');
       this.router.navigate(['sign-in']);
     });
   }

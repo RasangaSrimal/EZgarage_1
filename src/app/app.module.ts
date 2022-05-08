@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -25,7 +26,8 @@ import { AuthService } from './shared/services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { ReservationComponent } from './components/dashboard/reservation/reservation.component';
 
-
+import { ToastrModule } from 'ngx-toastr';
+import { GooglePayButtonModule } from "@google-pay/button-angular";
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,14 @@ import { ReservationComponent } from './components/dashboard/reservation/reserva
     AngularFireDatabaseModule,
     AppRoutingModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      timeOut: 5000, // 15 seconds
+      progressBar: true
+    }),
+    BrowserAnimationsModule,
+    GooglePayButtonModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

@@ -5,7 +5,7 @@
 </nav>
 
 <!-- Sidebar navigation -->
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="authService.userData">
   <div class="row">
 
     <nav class="col-md-2 d-md-block bg-light sidebar">
@@ -13,17 +13,23 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active " (click)="setIsActive('profile')">
-              <i class="fas fa-user"></i>User Profile
+              <i class="fas fa-user"></i>{{!authService?.userData?.adminRole ? 'User Profile' : 'Admin Profile'}}
             </a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!authService?.userData?.adminRole">
             <a class="nav-link" (click)="setIsActive('reservation')">
               <i class="fas fa-bookmark"></i>My Reservations
             </a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="authService?.userData?.adminRole">
+            <a class="nav-link" (click)="setIsActive('allreservation')">
+              <i class="fas fa-bookmark"></i>All Reservations
+            </a>
+          </li>
+
+          <li class="nav-item"  *ngIf="!authService?.userData?.adminRole">
             <a class="nav-link" (click)="setIsActive('addreservation')">
               <i class="fas fa-shopping-cart"></i>Add a Reservation
             </a>
@@ -44,7 +50,7 @@
       <div class="inner-adjust" *ngIf="isActive['profile']">
 
         <div class="pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">User Profile</h1>
+          <h1 class="h2">{{!authService?.userData?.adminRole ? 'User Profile' : 'Admin Profile'}}</h1>
         </div>
         <!-- Show user data when logged in -->
         <div class="row" *ngIf="authService.userData as user">
@@ -68,18 +74,18 @@
         <div class="pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">My Reservations</h1>
         </div>
-        <div class="row" *ngIf="authService.userData as user">
+        <div class="row" *ngIf="reservations.length > 0">
           <div class="col-md-12">
             <div class="media">
                <table class="responstable">
                 <thead>
                   <tr>
-                    <th>Vehicle Number</th>
+                    <th style="width: 200px;" >Vehicle Number</th>
                     <th>Model</th>
-                    <th>Date</th>
-                    <th>Slot</th>
+                    <th style="width: 200px;">Date</th>
+                    <th style="width: 250px;">Slot</th>
                     <th>Status</th>
-                    <th>Payment</th>
+                    <th style="width: 300px; text-align: center;">Payment</th>
                     <th>Payment Status</th>
                   </tr>
                 </thead>
@@ -91,7 +97,62 @@
                     <td>{{item.date}}</td>
                     <td>{{item.timeSlot}}</td>
                     <td>{{item.status}}</td>
-                    <td>{{item.payment ? item.payment : 'Pending'}}</td>
+                    <td style="text-align: center;
+                    vertical-align: middle;">
+                      {{item.payment ? item.payment : 'Pending'}} 
+                      <div class="demo" style="margin-right: 70px;" *ngIf="item.payment">
+                        <google-pay-button environment="TEST" [buttonColor]="buttonColor" [buttonType]="buttonType"
+                          [buttonSizeMode]="isCustomSize ? 'fill' : 'static'" [paymentRequest]="paymentRequest" [style.width.px]="buttonWidth"
+                          [style.height.px]="buttonHeight" (loadpaymentdata)="onLoadPaymentData($event)"></google-pay-button>
+                      </div>
+                    </td>
+                    <td>{{item.paymentStatus ? 'Done' : 'Pending'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inner-adjust" *ngIf="isActive['allreservation']">
+
+        <div class="pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">All Reservations</h1>
+        </div>
+        <div class="row" *ngIf="reservations.length > 0">
+          <div class="col-md-12">
+            <div class="media">
+               <table class="responstable">
+                <thead>
+                  <tr>
+                    <th style="width: 150px;">Vehicle Number</th>
+                    <th>Model</th>
+                    <th style="width: 200px;">Date</th>
+                    <th style="width: 250px;">Slot</th>
+                    <th style="width: 200px;">Status</th>
+                    <th style="width: 200px;">Payment</th>
+                    <th style="width: 150px;">Payment Status</th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <tr *ngFor="let item of reservations">
+                    <td>{{item.regNo}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.timeSlot}}</td>
+                    <td>
+                      <select [(ngModel)]="item.status" (change)="changeStatus(item)">
+                        <option value="Pending">Pending</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Inprogress">Inprogress</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="text" style="width: 150px;" (change)="changeStatus(item)" [(ngModel)]="item.payment"/>
+                    </td>
                     <td>{{item.paymentStatus ? 'Done' : 'Pending'}}</td>
                   </tr>
                 </tbody>
