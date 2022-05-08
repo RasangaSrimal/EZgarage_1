@@ -31,12 +31,64 @@ export class DashboardComponent implements OnInit {
       )
     ).subscribe(data => {
       console.log(data);
-      this.reservations = data.filter(d => d.userId == this.authService.userData.uid);;
+      if(!this.authService.userData.adminRole){
+        this.reservations = data.filter(d => d.userId == this.authService.userData.uid);;
+      }else{
+        this.reservations = data;
+      }
     });
   }
 
   setIsActive(key: any){
     this.isActive = {};
     this.isActive[key] = true;
+  }
+
+  changeStatus(item: any){
+    //console.log(item);
+    this.reservationService.update(item.id, item);
+  }
+
+  buttonColor:any = "black";
+  buttonType:any = "pay";
+  isCustomSize = false;
+  buttonWidth = 160;
+  buttonHeight = 40;
+  isTop = window === window.top;
+
+  paymentRequest:any = {
+    apiVersion: 2,
+    apiVersionMinor: 0,
+    allowedPaymentMethods: [
+      {
+        type: "CARD",
+        parameters: {
+          allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+          allowedCardNetworks: ["AMEX", "VISA", "MASTERCARD"]
+        },
+        tokenizationSpecification: {
+          type: "PAYMENT_GATEWAY",
+          parameters: {
+            gateway: "example",
+            gatewayMerchantId: "exampleGatewayMerchantId"
+          }
+        }
+      }
+    ],
+    merchantInfo: {
+      merchantId: "12345678901234567890",
+      merchantName: "Demo Merchant"
+    },
+    transactionInfo: {
+      totalPriceStatus: "FINAL",
+      totalPriceLabel: "Total",
+      totalPrice: "100.00",
+      currencyCode: "USD",
+      countryCode: "US"
+    }
+  };
+
+  onLoadPaymentData(event: any) {
+    console.log("load payment data", event.detail);
   }
 }
